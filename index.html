@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLICK.ZIP — Book Ur Tickets bestie 🎬</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="logo" onclick="navigate('movies')">FLICK<span>.ZIP</span></div>
+  <ul>
+    <li><a id="nav-movies" class="active" onclick="navigate('movies')">Movies</a></li>
+    <li><a id="nav-cinemas" onclick="navigate('cinemas')">Cinemas</a></li>
+    <li><a id="nav-events" class="notif" onclick="navigate('events')">Events</a></li>
+    <li><a id="nav-signin" class="nav-cta" onclick="navigate('signin')">Sign In</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     PAGE: MOVIES
+══════════════════════════════════ -->
+<div id="page-movies" class="page active">
+
+  <section class="hero">
+    <div class="hero-tag">✦ Now Showing in Your City</div>
+    <h1>WATCH<br><span class="accent-lime">THE</span><br><span class="accent-pink">VIBES</span></h1>
+    <p class="hero-sub">Tickets that slap. No cap. Book your cinema moment before it's sold out, bestie.</p>
+    <div class="search-bar">
+      <input type="text" placeholder="Search movies, cinemas, vibes..." id="searchInput">
+      <button class="search-btn" onclick="handleSearch()">Search →</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-num">42<span>K+</span></div><div class="stat-label">Tickets booked</div></div>
+      <div class="stat"><div class="stat-num">128</div><div class="stat-label">Movies showing</div></div>
+      <div class="stat"><div class="stat-num">4.9<span>★</span></div><div class="stat-label">Avg rating</div></div>
+    </div>
+  </section>
+
+  <div class="section">
+    <div class="featured-banner">
+      <div class="featured-left">
+        <div>
+          <div class="featured-label">🔥 Most Hyped This Week</div>
+          <div class="featured-title">NEON<br>ABYSS 2</div>
+          <p class="featured-desc">An underground hacker discovers the simulation is breaking down. Pure serotonin for your eyeballs. Lowkey a masterpiece ngl.</p>
+          <div class="featured-actions">
+            <button class="btn-primary" onclick="openBooking({title:'Neon Abyss 2',emoji:'🌐',genre:'Sci-Fi',rating:'9.1',price:320})">Book Now ↗</button>
+            <!--button class="btn-ghost">Watch Trailer</button-->
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+          <span style="font-size:0.75rem;color:var(--muted);">🕐 2h 17m</span>
+          <span style="font-size:0.75rem;color:var(--muted);">⭐ 9.1</span>
+          <span style="font-size:0.75rem;color:var(--cyan);">UA</span>
+        </div>
+      </div>
+      <div class="featured-right">
+        <div class="featured-right-bg" style="background:radial-gradient(circle at 60% 50%,rgba(0,245,212,0.12),transparent 60%),radial-gradient(circle at 40% 80%,rgba(123,47,255,0.15),transparent 50%);">
+          <span style="font-size:7rem;position:relative;z-index:2">🌐</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-bottom:0">
+    <div class="genre-filters">
+      <button class="genre-filter-btn active" onclick="filterGenre(this,'All')">All</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Action')">Action 🔥</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Horror')">Horror 👻</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Sci-Fi')">Sci-Fi 🛸</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Comedy')">Comedy 😭</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Drama')">Drama 💅</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Romance')">Romance 💘</button>
+      <button class="genre-filter-btn" onclick="filterGenre(this,'Thriller')">Thriller 🔪</button>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0.5rem">
+    <div class="section-header">
+      <div class="section-title">Now <em>Showing</em></div>
+      <a class="see-all" onclick="filterGenre(document.querySelector('.genre-filter-btn'),'All')">View all →</a>
+    </div>
+    <div class="movies-grid" id="moviesGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: CINEMAS
+══════════════════════════════════ -->
+<div id="page-cinemas" class="page">
+  <div class="page-header">
+    <div class="hero-tag">📍 Near You · 12 Cinemas</div>
+    <h1>Find Ur <span style="color:var(--cyan)">Cinema</span></h1>
+    <p>All the spots, all the screens. IMAX, Dolby, 4DX — whatever format hits different for you.</p>
+  </div>
+  <div class="section" style="padding-top:0">
+    <div class="cinemas-grid" id="cinemasGrid"></div>
+  </div>
+</div>
+
+<!-- Cinema Detail Modal -->
+<div class="cinema-detail-modal" id="cinemaDetailModal" onclick="closeCinemaModal(event)">
+  <div class="cinema-detail" id="cinemaDetailContent"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: EVENTS
+══════════════════════════════════ -->
+<div id="page-events" class="page">
+  <div class="page-header">
+    <div class="hero-tag">🎪 Live · Screenings · Premieres</div>
+    <h1>Special <span style="color:var(--pink)">Events</span></h1>
+    <p>Midnight premieres, marathons, fan screenings. The kind of lowkey iconic stuff you tell your mutuals about.</p>
+  </div>
+  <div class="section" style="padding-top:0">
+    <div class="events-grid" id="eventsGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE: SIGN IN
+══════════════════════════════════ -->
+<div id="page-signin" class="page">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div id="authForms">
+        <div class="auth-logo">FLICK<span>.ZIP</span></div>
+        <p class="auth-tagline">ur movie bestie is waiting bestie 🎬</p>
+        <div class="auth-tabs">
+          <button class="auth-tab active" onclick="switchAuthTab('login')">Sign In</button>
+          <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+        </div>
+
+        <!-- Login -->
+        <div class="auth-form active" id="form-login">
+          <div class="field">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" id="loginEmail">
+          </div>
+          <div class="field">
+            <label>Password <span class="forgot" onclick="showToast('Password reset link sent! (not really tho 💀)')">Forgot?</span></label>
+            <input type="password" placeholder="••••••••" id="loginPass">
+          </div>
+          <button class="auth-btn" onclick="handleAuth('login')">Sign In →</button>
+          <div class="auth-divider">or continue with</div>
+          <div class="social-btns">
+            <button class="social-btn" onclick="handleSocialAuth('Google')">🌐 Google</button>
+            <button class="social-btn" onclick="handleSocialAuth('Apple')">🍎 Apple</button>
+          </div>
+        </div>
+
+        <!-- Signup -->
+        <div class="auth-form" id="form-signup">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" placeholder="Your Name" id="signupName">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" id="signupEmail">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" placeholder="Make it spicy 🌶️" id="signupPass">
+          </div>
+          <button class="auth-btn" onclick="handleAuth('signup')">Create Account →</button>
+          <div class="auth-divider">or continue with</div>
+          <div class="social-btns">
+            <button class="social-btn" onclick="handleSocialAuth('Google')">🌐 Google</button>
+            <button class="social-btn" onclick="handleSocialAuth('Apple')">🍎 Apple</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-success" id="authSuccess">
+        <div class="auth-success-icon">🎉</div>
+        <div class="auth-success-title" id="authSuccessTitle">WELCOME BACK</div>
+        <p class="auth-success-sub" id="authSuccessMsg">You're in bestie. Redirecting you to the movies...</p>
+        <button class="auth-btn" style="margin-top:1.5rem" onclick="navigate('movies')">Browse Movies →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     BOOKING MODAL (shared)
+══════════════════════════════════ -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeOnBackdrop(event)">
+  <div class="modal" id="bookingModal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-movie-header" id="modalHeader"></div>
+    <div class="progress-dots" id="progressDots">
+      <div class="dot active" id="dot0"></div>
+      <div class="dot" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="booking-step active" id="step1">
+      <div class="step-label">Step 1 of 3</div>
+      <div class="step-title">Pick ur showtime 🗓️</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Date</div>
+      <div class="date-grid" id="dateGrid"></div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Showtime</div>
+      <div class="time-grid">
+        <div class="time-chip" onclick="selectTime(this,'10:30 AM')">10:30 AM<span class="seats">62 seats</span></div>
+        <div class="time-chip" onclick="selectTime(this,'1:15 PM')">1:15 PM<span class="seats">28 seats</span></div>
+        <div class="time-chip" onclick="selectTime(this,'4:00 PM')">4:00 PM<span class="seats">89 seats</span></div>
+        <div class="time-chip" onclick="selectTime(this,'7:30 PM')">7:30 PM<span class="seats">11 left 🔥</span></div>
+        <div class="time-chip" onclick="selectTime(this,'9:45 PM')">9:45 PM<span class="seats">45 seats</span></div>
+        <div class="time-chip" onclick="selectTime(this,'11:59 PM')">11:59 PM<span class="seats">72 seats</span></div>
+      </div>
+      <button class="btn-confirm" id="step1Btn" disabled onclick="goToStep(2)">Pick Seats →</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="booking-step" id="step2">
+      <div class="step-label">Step 2 of 3</div>
+      <div class="step-title">Choose ur seats 🎟️</div>
+      <div class="screen-indicator">SCREEN</div>
+      <div class="screen-bar"></div>
+      <div class="seat-grid" id="seatGrid"></div>
+      <div class="seat-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15)"></div>Available</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--lime)"></div>Selected</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,107,53,0.3);border:1px solid rgba(255,107,53,0.4)"></div>Premium</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.04)"></div>Taken</div>
+      </div>
+      <div class="booking-summary">
+        <div>
+          <div class="summary-text" id="seatSummaryText">No seats selected</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:2px" id="seatSummaryNames"></div>
+        </div>
+        <div class="summary-price" id="priceDisplay">₹0 <span>total</span></div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goToStep(1)">← Back</button>
+        <button class="btn-next" id="step2Btn" disabled onclick="goToStep(3)">Confirm Seats →</button>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="booking-step" id="step3">
+      <div class="step-label">Step 3 of 3</div>
+      <div class="step-title">Confirm ur booking ✅</div>
+      <div class="ticket-card" id="confirmTicket"></div>
+      <div class="step-nav">
+        <button class="btn-back" onclick="goToStep(2)">← Back</button>
+        <button class="btn-next" onclick="confirmBooking()">Confirm Booking 🎟️</button>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="booking-step" id="stepSuccess">
+      <div class="success-state">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">BOOKED FRFR</div>
+        <p class="success-sub">Your tickets are confirmed no cap. Check ur email for the QR code!</p>
+        <div class="ticket-card" id="successTicket"></div>
+        <button class="btn-confirm" onclick="closeModal()">Back to Movies</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  Made with 🤍 for cinema lovers · <span>FLICK.ZIP</span> · All showtimes are fictional bestie
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
