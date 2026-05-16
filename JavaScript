@@ -1,0 +1,498 @@
+/* ═══════════════════════════════════
+   DATA
+═══════════════════════════════════ */
+const movies = [
+  { title:'Crimson Protocol', emoji:'💀', genre:'Action', rating:'8.4', duration:'2h 08m', cert:'A', price:280 },
+  { title:'Ghost Signal', emoji:'👻', genre:'Horror', rating:'7.9', duration:'1h 52m', cert:'UA', price:260 },
+  { title:'Neon Abyss 2', emoji:'🌐', genre:'Sci-Fi', rating:'9.1', duration:'2h 17m', cert:'UA', price:320 },
+  { title:'Soft Launch', emoji:'😭', genre:'Comedy', rating:'7.5', duration:'1h 45m', cert:'U', price:240 },
+  { title:'Shattered Glass', emoji:'🌑', genre:'Drama', rating:'8.8', duration:'2h 31m', cert:'UA', price:300 },
+  { title:'Hyper Drift', emoji:'🚗', genre:'Action', rating:'7.3', duration:'1h 58m', cert:'UA', price:260 },
+  { title:'The Static', emoji:'📺', genre:'Horror', rating:'8.2', duration:'2h 05m', cert:'A', price:270 },
+  { title:'Orbit Nine', emoji:'🪐', genre:'Sci-Fi', rating:'8.6', duration:'2h 22m', cert:'U', price:310 },
+  { title:'Last Summer', emoji:'🌅', genre:'Romance', rating:'7.8', duration:'1h 50m', cert:'U', price:250 },
+  { title:'Deadlock', emoji:'🔐', genre:'Thriller', rating:'8.1', duration:'2h 14m', cert:'A', price:285 },
+  { title:'Void Walker', emoji:'🕳️', genre:'Sci-Fi', rating:'7.6', duration:'2h 00m', cert:'UA', price:290 },
+  { title:'Hot Mess', emoji:'🎭', genre:'Comedy', rating:'7.2', duration:'1h 40m', cert:'U', price:230 },
+];
+
+const cinemas = [
+  {
+    name:'Stellar IMAX Multiplex', location:'Connaught Place, New Delhi', emoji:'🏛️',
+    bg:'rgba(0,245,212,0.08)', tags:['IMAX','Dolby','4DX'],
+    shows:['Neon Abyss 2','Crimson Protocol','Orbit Nine'],
+    amenities:['🍿 Gourmet Concession','☕ Café','🅿️ Parking','♿ Accessible','📱 App Pay'],
+    desc:'The biggest screen in the city. IMAX certified. Your movies on max difficulty.',
+    movies: [
+      { title:'Neon Abyss 2', times:['10:00 AM','1:30 PM','5:00 PM','9:30 PM'], price: 420, emoji:'🌐', genre:'Sci-Fi', rating:'9.1' },
+      { title:'Crimson Protocol', times:['11:00 AM','3:00 PM','7:00 PM'], price: 380, emoji:'💀', genre:'Action', rating:'8.4' },
+      { title:'Orbit Nine', times:['12:00 PM','4:30 PM','8:30 PM'], price: 400, emoji:'🪐', genre:'Sci-Fi', rating:'8.6' },
+    ]
+  },
+  {
+    name:'Pulse Cinemas', location:'Bandra West, Mumbai', emoji:'💜',
+    bg:'rgba(123,47,255,0.1)', tags:['Dolby','3D','2D'],
+    shows:['Ghost Signal','Soft Launch','The Static'],
+    amenities:['🍕 Dine-In','🎮 Arcade','🅿️ Valet','📱 App Pay'],
+    desc:'Vibey mid-size cinema with insane Dolby sound. The seats slap lowkey.',
+    movies: [
+      { title:'Ghost Signal', times:['9:30 AM','2:00 PM','6:30 PM','11:00 PM'], price: 320, emoji:'👻', genre:'Horror', rating:'7.9' },
+      { title:'Soft Launch', times:['10:30 AM','3:30 PM','7:30 PM'], price: 290, emoji:'😭', genre:'Comedy', rating:'7.5' },
+      { title:'The Static', times:['1:00 PM','5:30 PM','9:00 PM'], price: 310, emoji:'📺', genre:'Horror', rating:'8.2' },
+    ]
+  },
+  {
+    name:'Neon Screen 16', location:'Koramangala, Bangalore', emoji:'🌆',
+    bg:'rgba(200,245,62,0.08)', tags:['4DX','IMAX','Dolby'],
+    shows:['Hyper Drift','Shattered Glass','Last Summer'],
+    amenities:['🍔 Food Court','🎯 Games Zone','☕ Starbucks','📱 App Pay'],
+    desc:'Bangalore\'s trendiest multiplex. 16 screens of pure cinema energy.',
+    movies: [
+      { title:'Hyper Drift', times:['10:00 AM','1:00 PM','4:00 PM','8:00 PM'], price: 340, emoji:'🚗', genre:'Action', rating:'7.3' },
+      { title:'Shattered Glass', times:['11:30 AM','3:30 PM','7:30 PM'], price: 360, emoji:'🌑', genre:'Drama', rating:'8.8' },
+      { title:'Last Summer', times:['12:30 PM','4:30 PM','9:00 PM'], price: 300, emoji:'🌅', genre:'Romance', rating:'7.8' },
+    ]
+  },
+  {
+    name:'Galaxy Cineplex', location:'Salt Lake, Kolkata', emoji:'🌌',
+    bg:'rgba(255,60,172,0.08)', tags:['3D','2D','Dolby'],
+    shows:['Deadlock','Void Walker','Hot Mess'],
+    amenities:['🍿 Classic Concession','🅿️ Parking','♿ Accessible'],
+    desc:'Old school charm, new school screens. Classic cinema done right fr.',
+    movies: [
+      { title:'Deadlock', times:['10:30 AM','2:30 PM','6:30 PM','10:30 PM'], price: 280, emoji:'🔐', genre:'Thriller', rating:'8.1' },
+      { title:'Void Walker', times:['12:00 PM','4:00 PM','8:00 PM'], price: 270, emoji:'🕳️', genre:'Sci-Fi', rating:'7.6' },
+      { title:'Hot Mess', times:['11:00 AM','3:00 PM','7:00 PM'], price: 250, emoji:'🎭', genre:'Comedy', rating:'7.2' },
+    ]
+  },
+  {
+    name:'The Reel Lounge', location:'Anna Nagar, Chennai', emoji:'🎞️',
+    bg:'rgba(255,107,53,0.08)', tags:['2D','Dolby'],
+    shows:['Neon Abyss 2','Crimson Protocol','Soft Launch'],
+    amenities:['🍷 Bar','☕ Café','🅿️ Valet','👑 Recliner Seats'],
+    desc:'Boutique premium cinema. Recliners, wine, and zero screaming kids.',
+    movies: [
+      { title:'Neon Abyss 2', times:['11:00 AM','3:00 PM','7:00 PM'], price: 480, emoji:'🌐', genre:'Sci-Fi', rating:'9.1' },
+      { title:'Crimson Protocol', times:['1:00 PM','5:00 PM','9:00 PM'], price: 450, emoji:'💀', genre:'Action', rating:'8.4' },
+    ]
+  },
+  {
+    name:'CineZone Hyderabad', location:'Jubilee Hills, Hyderabad', emoji:'⚡',
+    bg:'rgba(0,245,212,0.06)', tags:['IMAX','4DX','3D','2D'],
+    shows:['Orbit Nine','The Static','Last Summer'],
+    amenities:['🍔 Dine-In','🎮 VR Zone','🅿️ Multi-Level Parking','📱 App Pay','♿ Accessible'],
+    desc:'Full send on tech. IMAX + 4DX in one building. Your body will thank you (or not).',
+    movies: [
+      { title:'Orbit Nine', times:['9:00 AM','12:00 PM','3:00 PM','6:00 PM','9:00 PM'], price: 430, emoji:'🪐', genre:'Sci-Fi', rating:'8.6' },
+      { title:'The Static', times:['10:00 AM','2:00 PM','7:30 PM'], price: 370, emoji:'📺', genre:'Horror', rating:'8.2' },
+      { title:'Last Summer', times:['11:30 AM','4:00 PM','8:30 PM'], price: 350, emoji:'🌅', genre:'Romance', rating:'7.8' },
+    ]
+  },
+];
+
+const events = [
+  {
+    name:'Midnight Premiere: Void Walker 2', emoji:'🌙', type:'Premiere', typeColor:'genre-scifi',
+    date:'Sat, May 24 · 11:59 PM', venue:'Stellar IMAX, New Delhi', price:800,
+    desc:'The sequel nobody asked for but everyone needed. Midnight screening with director Q&A, merch drops, and full chaos energy.',
+    seats:'142 seats left',
+  },
+  {
+    name:'Horror Marathon: 6 Films, All Night', emoji:'👁️', type:'Marathon', typeColor:'genre-horror',
+    date:'Fri–Sat, May 30', venue:'Neon Screen 16, Bangalore', price:999,
+    desc:'6 horror films. 0 sleep. 100% haunted. Starts at 8 PM, ends when the sun saves you.',
+    seats:'58 seats left 🔥',
+  },
+  {
+    name:'Retro Rewind: 90s Bollywood Night', emoji:'🪅', type:'Retro', typeColor:'genre-comedy',
+    date:'Sun, May 25 · 6:00 PM', venue:'Galaxy Cineplex, Kolkata', price:399,
+    desc:'DDLJ, KKHH, Dil To Pagal Hai. Dress up, sing along, and ugly cry. No shame zone.',
+    seats:'210 seats left',
+  },
+  {
+    name:'Film Fest: Short Films Showcase', emoji:'🎬', type:'Festival', typeColor:'genre-drama',
+    date:'Wed, May 28 · 5:00 PM', venue:'The Reel Lounge, Chennai', price:350,
+    desc:'12 indie short films from emerging directors. Brought to you by the underground cinema scene that actually has taste.',
+    seats:'89 seats left',
+  },
+  {
+    name:'Couples Night: Romance Double Feature', emoji:'💞', type:'Special', typeColor:'genre-romance',
+    date:'Sat, May 31 · 7:00 PM', venue:'Pulse Cinemas, Mumbai', price:1200,
+    desc:'Two tickets, one price. Includes roses and overpriced nachos. You\'re welcome bestie.',
+    seats:'34 couples left 🔥',
+  },
+  {
+    name:'Fan Screening: Neon Abyss 2 Rewatch', emoji:'🌐', type:'Fan Event', typeColor:'genre-scifi',
+    date:'Sun, Jun 1 · 3:00 PM', venue:'CineZone, Hyderabad', price:450,
+    desc:'Official fan rewatch with exclusive behind-the-scenes content, cast messages, and collective unhinged reactions.',
+    seats:'175 seats left',
+  },
+];
+
+/* ═══════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════ */
+const pages = ['movies','cinemas','events','signin'];
+function navigate(page) {
+  pages.forEach(p => {
+    document.getElementById('page-'+p).classList.toggle('active', p === page);
+    const navEl = document.getElementById('nav-'+p);
+    if(navEl) {
+      navEl.classList.toggle('active', p === page);
+    }
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (page === 'cinemas') renderCinemas();
+  if (page === 'events') renderEvents();
+}
+
+/* ═══════════════════════════════════
+   MOVIES
+═══════════════════════════════════ */
+const genreClass = { Action:'genre-action', Horror:'genre-horror', 'Sci-Fi':'genre-scifi', Comedy:'genre-comedy', Drama:'genre-drama', Romance:'genre-romance', Thriller:'genre-thriller' };
+const genreBg = { Action:'rgba(255,107,53,0.12)', Horror:'rgba(255,60,172,0.12)', 'Sci-Fi':'rgba(0,245,212,0.1)', Comedy:'rgba(200,245,62,0.1)', Drama:'rgba(123,47,255,0.12)', Romance:'rgba(255,80,180,0.1)', Thriller:'rgba(255,130,80,0.1)' };
+let currentFilter = 'All';
+
+function renderMovies() {
+  const grid = document.getElementById('moviesGrid');
+  const filtered = currentFilter === 'All' ? movies : movies.filter(m => m.genre === currentFilter);
+  grid.innerHTML = filtered.map(m => `
+    <div class="movie-card" onclick="openBooking(${JSON.stringify(m).replace(/"/g,"'")})">
+      <div class="movie-poster">
+        <div class="movie-poster-bg" style="background:${genreBg[m.genre]||'rgba(255,255,255,0.04)'}">
+          <span style="position:relative;z-index:2">${m.emoji}</span>
+        </div>
+        <div class="genre-pill ${genreClass[m.genre]||''}">${m.genre}</div>
+        <div class="rating-badge">⭐ ${m.rating}</div>
+        <div class="movie-overlay">
+          <button class="book-now-btn">Book Now ↗</button>
+        </div>
+      </div>
+      <div class="movie-info">
+        <div class="movie-title">${m.title}</div>
+        <div class="movie-meta"><span>${m.duration}</span><span>${m.cert}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterGenre(btn, genre) {
+  document.querySelectorAll('.genre-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = genre;
+  renderMovies();
+}
+
+/* ═══════════════════════════════════
+   CINEMAS
+═══════════════════════════════════ */
+function renderCinemas() {
+  const grid = document.getElementById('cinemasGrid');
+  grid.innerHTML = cinemas.map((c, i) => `
+    <div class="cinema-card" onclick="openCinema(${i})">
+      <div class="cinema-banner" style="background:${c.bg}">
+        <span style="position:relative;z-index:2;font-size:3.5rem">${c.emoji}</span>
+      </div>
+      <div class="cinema-info">
+        <div class="cinema-name">${c.name}</div>
+        <div class="cinema-location">📍 ${c.location}</div>
+        <div class="cinema-tags">${c.tags.map(t=>`<span class="cinema-tag tag-${t.toLowerCase()}">${t}</span>`).join('')}</div>
+        <div class="cinema-shows">Showing: <strong>${c.shows.slice(0,2).join(', ')}</strong> + ${c.movies.length} more</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openCinema(i) {
+  const c = cinemas[i];
+  const content = document.getElementById('cinemaDetailContent');
+  content.innerHTML = `
+    <button class="modal-close-btn" onclick="closeCinemaModal()">✕</button>
+    <div style="font-size:3rem;margin-bottom:0.75rem">${c.emoji}</div>
+    <div class="cd-name">${c.name}</div>
+    <div class="cd-loc">📍 ${c.location}</div>
+    <div class="cd-amenities">${c.amenities.map(a=>`<div class="amenity-badge">${a}</div>`).join('')}</div>
+    <p style="font-size:0.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem">${c.desc}</p>
+    <div class="cd-showings">
+      <div class="cd-showings-title">🎬 Now Showing</div>
+      ${c.movies.map(m=>`
+        <div class="showing-row" onclick="openBookingFromCinema(${JSON.stringify(m).replace(/"/g,"'")})">
+          <div>
+            <div class="showing-title">${m.emoji} ${m.title}</div>
+            <div class="showing-times">${m.times.map(t=>`<span class="showing-time">${t}</span>`).join('')}</div>
+          </div>
+          <div class="showing-price">₹${m.price}</div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  document.getElementById('cinemaDetailModal').classList.add('active');
+}
+
+function openBookingFromCinema(movie) {
+  closeCinemaModal();
+  setTimeout(() => openBooking(movie), 150);
+}
+
+function closeCinemaModal(e) {
+  if (!e || e.target === document.getElementById('cinemaDetailModal')) {
+    document.getElementById('cinemaDetailModal').classList.remove('active');
+  }
+}
+
+/* ═══════════════════════════════════
+   EVENTS
+═══════════════════════════════════ */
+function renderEvents() {
+  const grid = document.getElementById('eventsGrid');
+  grid.innerHTML = events.map((ev, i) => `
+    <div class="event-card">
+      <div class="event-banner" style="background:${genreBg[ev.type]||'rgba(255,255,255,0.04)'}">
+        <div class="event-type-badge ${ev.typeColor}">${ev.type}</div>
+        <span style="position:relative;z-index:2;font-size:3.5rem">${ev.emoji}</span>
+      </div>
+      <div class="event-info">
+        <div class="event-name">${ev.name}</div>
+        <div class="event-meta">
+          📅 ${ev.date}<br>
+          📍 ${ev.venue}<br>
+          🎫 ${ev.seats}
+        </div>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1rem">${ev.desc}</p>
+        <div class="event-footer">
+          <div class="event-price">₹${ev.price} <span>/person</span></div>
+          <button class="btn-register" onclick="registerEvent(${i})">Register →</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function registerEvent(i) {
+  const ev = events[i];
+  showToast(`Registered for "${ev.name}"! Check ur email 🎫`);
+}
+
+/* ═══════════════════════════════════
+   AUTH
+═══════════════════════════════════ */
+let activeAuthTab = 'login';
+function switchAuthTab(tab) {
+  activeAuthTab = tab;
+  document.querySelectorAll('.auth-tab').forEach((t, i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  document.getElementById('form-login').classList.toggle('active', tab==='login');
+  document.getElementById('form-signup').classList.toggle('active', tab==='signup');
+}
+
+function handleAuth(type) {
+  if (type === 'login') {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass = document.getElementById('loginPass').value.trim();
+    if (!email || !pass) { showToast('Fill in all fields bestie 👀'); return; }
+    if (!email.includes('@')) { showToast('That doesn\'t look like an email lol'); return; }
+    showAuthSuccess('WELCOME BACK 👋', `Logged in as ${email}. You're in bestie!`);
+  } else {
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const pass = document.getElementById('signupPass').value.trim();
+    if (!name || !email || !pass) { showToast('Fill in all fields bestie 👀'); return; }
+    if (!email.includes('@')) { showToast('That doesn\'t look like an email lol'); return; }
+    if (pass.length < 6) { showToast('Password too short bestie, be safer 🔐'); return; }
+    showAuthSuccess('ACCOUNT CREATED 🎉', `Welcome to FLICK.ZIP, ${name}! ur one of us now.`);
+  }
+}
+
+function handleSocialAuth(provider) {
+  showAuthSuccess(`SIGNED IN WITH ${provider.toUpperCase()} 🎉`, `You\'re in via ${provider}. Let\'s gooooo!`);
+}
+
+function showAuthSuccess(title, msg) {
+  document.getElementById('authForms').style.display = 'none';
+  const s = document.getElementById('authSuccess');
+  s.style.display = 'block';
+  document.getElementById('authSuccessTitle').textContent = title;
+  document.getElementById('authSuccessMsg').textContent = msg;
+  // update nav cta
+  document.getElementById('nav-signin').textContent = '👤 Profile';
+  document.getElementById('nav-signin').classList.remove('nav-cta');
+  document.getElementById('nav-signin').style.cssText = 'color:var(--lime)!important;background:rgba(200,245,62,0.08);border:1px solid rgba(200,245,62,0.25);border-radius:100px;padding:0.4rem 1rem;font-size:0.85rem;font-weight:600';
+}
+
+/* ═══════════════════════════════════
+   BOOKING
+═══════════════════════════════════ */
+let bookingData = {}, selectedDate = null, selectedTime = null, selectedSeats = [];
+
+function openBooking(movie) {
+  bookingData = typeof movie === 'string' ? JSON.parse(movie.replace(/'/g,'"')) : {...movie};
+  selectedDate = null; selectedTime = null; selectedSeats = [];
+
+  document.getElementById('modalHeader').innerHTML = `
+    <div class="modal-poster" style="background:${genreBg[bookingData.genre]||'rgba(255,255,255,0.05)'}">${bookingData.emoji}</div>
+    <div>
+      <div class="modal-movie-title">${bookingData.title}</div>
+      <div class="modal-movie-sub">${bookingData.genre} · ⭐ ${bookingData.rating||'—'} · ₹${bookingData.price}/seat</div>
+    </div>`;
+
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const today = new Date();
+  document.getElementById('dateGrid').innerHTML = Array.from({length:7},(_,i)=>{
+    const d=new Date(today); d.setDate(d.getDate()+i);
+    return `<div class="date-chip" onclick="selectDate(this,'${d.getDate()} ${months[d.getMonth()]}')">
+      <div class="date-chip-day">${i===0?'Today':days[d.getDay()]}</div>
+      <div class="date-chip-num">${d.getDate()}</div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.time-chip').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('step1Btn').disabled = true;
+
+  // reset modal state
+  document.getElementById('progressDots').style.display = 'flex';
+  document.getElementById('modalHeader').style.display = 'flex';
+  document.getElementById('stepSuccess').classList.remove('active');
+  goToStep(1, true);
+  document.getElementById('modalBackdrop').classList.add('active');
+}
+
+function selectDate(el, val) {
+  document.querySelectorAll('.date-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); selectedDate = val; checkStep1();
+}
+function selectTime(el, val) {
+  document.querySelectorAll('.time-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); selectedTime = val; checkStep1();
+}
+function checkStep1() {
+  document.getElementById('step1Btn').disabled = !(selectedDate && selectedTime);
+}
+
+function buildSeatMap() {
+  const rows=['A','B','C','D','E','F','G'];
+  const taken=[[0,2],[0,3],[1,5],[1,6],[2,1],[3,4],[3,7],[3,8],[4,0],[4,9],[5,2],[5,3],[5,4],[6,6],[6,7]];
+  const premium=[0,1];
+  const grid=document.getElementById('seatGrid');
+  grid.innerHTML='';
+  rows.forEach((row,ri)=>{
+    const rowDiv=document.createElement('div');
+    rowDiv.className='seat-row';
+    rowDiv.innerHTML=`<div class="seat-row-label">${row}</div>`;
+    for(let si=0;si<10;si++){
+      if(si===4){const g=document.createElement('div');g.className='seat-gap';rowDiv.appendChild(g);}
+      const isTaken=taken.some(t=>t[0]===ri&&t[1]===si);
+      const isPrem=premium.includes(ri);
+      const seat=document.createElement('div');
+      seat.className=`seat ${isTaken?'taken':'available'} ${isPrem?'premium':''}`;
+      seat.dataset.id=`${row}${si+1}`;
+      seat.dataset.price=isPrem?Math.round(bookingData.price*1.5):bookingData.price;
+      if(!isTaken) seat.onclick=()=>toggleSeat(seat);
+      rowDiv.appendChild(seat);
+    }
+    grid.appendChild(rowDiv);
+  });
+  selectedSeats=[];
+  updateSeatSummary();
+}
+
+function toggleSeat(seat){
+  const id=seat.dataset.id;
+  if(seat.classList.contains('selected')){
+    seat.classList.remove('selected');
+    selectedSeats=selectedSeats.filter(s=>s!==id);
+  } else {
+    if(selectedSeats.length>=6){showToast('Max 6 seats per booking bestie 😅');return;}
+    seat.classList.add('selected');
+    selectedSeats.push(id);
+  }
+  updateSeatSummary();
+}
+
+function updateSeatSummary(){
+  const total=selectedSeats.reduce((sum,id)=>{
+    const s=document.querySelector(`[data-id="${id}"]`);
+    return sum+(s?parseInt(s.dataset.price):0);
+  },0);
+  document.getElementById('seatSummaryText').textContent=selectedSeats.length?`${selectedSeats.length} seat${selectedSeats.length>1?'s':''} selected`:'No seats selected';
+  document.getElementById('seatSummaryNames').textContent=selectedSeats.join(', ');
+  document.getElementById('priceDisplay').innerHTML=`₹${total.toLocaleString('en-IN')} <span>total</span>`;
+  document.getElementById('step2Btn').disabled=selectedSeats.length===0;
+}
+
+function goToStep(n, reset){
+  [1,2,3,'Success'].forEach(s=>{
+    const el=document.getElementById(`step${s}`);
+    if(el) el.classList.toggle('active', s===n);
+  });
+  [0,1,2].forEach(i=>{
+    const dot=document.getElementById(`dot${i}`);
+    dot.classList.toggle('active',i===n-1);
+    dot.classList.toggle('done',i<n-1);
+  });
+  if(n===2&&!reset) buildSeatMap();
+  if(n===3) buildConfirm();
+}
+
+function buildConfirm(){
+  const total=selectedSeats.reduce((sum,id)=>{
+    const s=document.querySelector(`[data-id="${id}"]`);
+    return sum+(s?parseInt(s.dataset.price):0);
+  },0);
+  document.getElementById('confirmTicket').innerHTML=`
+    <div class="ticket-row"><span class="ticket-label">🎬 Movie</span><span class="ticket-val">${bookingData.title}</span></div>
+    <div class="ticket-row"><span class="ticket-label">📅 Date & Time</span><span class="ticket-val">${selectedDate}, ${selectedTime}</span></div>
+    <div class="ticket-row"><span class="ticket-label">💺 Seats</span><span class="ticket-val">${selectedSeats.join(', ')}</span></div>
+    <div class="ticket-row" style="border-top:1px dashed rgba(200,245,62,0.15);padding-top:0.6rem;margin-top:0.4rem">
+      <span class="ticket-label">💰 Total</span>
+      <span class="ticket-val" style="color:var(--lime);font-size:1.1rem">₹${total.toLocaleString('en-IN')}</span>
+    </div>`;
+}
+
+function confirmBooking(){
+  const total=selectedSeats.reduce((sum,id)=>{
+    const s=document.querySelector(`[data-id="${id}"]`);
+    return sum+(s?parseInt(s.dataset.price):0);
+  },0);
+  document.getElementById('successTicket').innerHTML=`
+    <div class="ticket-row"><span class="ticket-label">🎬 Movie</span><span class="ticket-val">${bookingData.title}</span></div>
+    <div class="ticket-row"><span class="ticket-label">📅 When</span><span class="ticket-val">${selectedDate} · ${selectedTime}</span></div>
+    <div class="ticket-row"><span class="ticket-label">💺 Seats</span><span class="ticket-val">${selectedSeats.join(', ')}</span></div>
+    <div class="ticket-row"><span class="ticket-label">🎫 Booking ID</span><span class="ticket-val" style="color:var(--cyan)">FZ-${Math.random().toString(36).substr(2,8).toUpperCase()}</span></div>`;
+  [1,2,3].forEach(s=>document.getElementById(`step${s}`).classList.remove('active'));
+  document.getElementById('stepSuccess').classList.add('active');
+  document.getElementById('progressDots').style.display='none';
+  document.getElementById('modalHeader').style.display='none';
+}
+
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('active');
+}
+function closeOnBackdrop(e){
+  if(e.target===document.getElementById('modalBackdrop')) closeModal();
+}
+
+/* ═══════════════════════════════════
+   SEARCH
+═══════════════════════════════════ */
+function handleSearch(){
+  const val=document.getElementById('searchInput').value.trim().toLowerCase();
+  if(!val) return;
+  const match=movies.find(m=>m.title.toLowerCase().includes(val)||m.genre.toLowerCase().includes(val));
+  if(match){ openBooking(match); }
+  else { showToast(`No results for "${val}" bestie 😬`); }
+}
+document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')handleSearch();});
+
+/* ═══════════════════════════════════
+   TOAST
+═══════════════════════════════════ */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ═══════════════════════════════════
+   INIT
+═══════════════════════════════════ */
+renderMovies();
